@@ -41,13 +41,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun goToSignUp(){
         binding.txtSignup.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-
         }
     }
 
     private fun isUserLoggedIn() {
-        firebaseAuth.currentUser?.let {
-            findNavController().navigate(R.id.action_loginFragment_to_homeScreenFragment)
+        firebaseAuth.currentUser?.let {user ->
+            if(user.displayName.isNullOrEmpty()){
+                findNavController().navigate(R.id.action_loginFragment_to_setupProfileFragment)
+            }else{
+                findNavController().navigate(R.id.action_loginFragment_to_homeScreenFragment)
+            }
         }
     }
 
@@ -82,7 +85,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                 is Result.Succes -> {
                     binding.progressBar.visibility = View.GONE
-                    findNavController().navigate(R.id.action_loginFragment_to_homeScreenFragment)
+
+                    if(result.data?.displayName.isNullOrEmpty()){
+                        findNavController().navigate(R.id.action_loginFragment_to_setupProfileFragment)
+                    }else{
+                        findNavController().navigate(R.id.action_loginFragment_to_homeScreenFragment)
+                    }
                 }
 
                 is Result.Failure -> {

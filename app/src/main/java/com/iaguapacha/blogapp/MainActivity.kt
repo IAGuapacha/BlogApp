@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
         observeDestinationChange()
     }
@@ -37,6 +37,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.registerFragment -> {
+                    binding.bottomNavigationView.hide()
+                }
+
+                R.id.setupProfileFragment -> {
                     binding.bottomNavigationView.hide()
                 }
 
